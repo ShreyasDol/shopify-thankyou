@@ -1,0 +1,195 @@
+//////////// developed by Ashish G.////////////////////
+
+----------------- ########################  ----------------------------------
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Anton&display=swap" rel="stylesheet"> 
+<link rel="stylesheet" type="text/css" href="https://cdn.shopify.com/s/files/1/1233/4562/files/thank-you-updated.css?v=1596105369">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ 
+<script>
+$(document).ready(function(){
+$('.main__header').addClass('visually-hidden');
+$('.main__content').addClass('visually-hidden');
+$('.main__footer').addClass('visually-hidden');
+$('aside').addClass('visually-hidden');
+$('body').addClass('custom-body');
+
+
+$address = '<p>{{order.shipping_address.first_name}} {{order.shipping_address.last_name}} <br> {{order.shipping_address.address1}}<br>{{order.shipping_address.address2}}  {{order.shipping_address.city}}   {{order.shipping_address.province_code}}  {{order.shipping_address.zip}}<br> {{order.shipping_address.country}} <br>  {{order.shipping_address.phone}} </p>';
+
+
+$nht="";
+$nht+='<div class="custom-page-width">';
+$nht+='<div class="head">';
+$nht+='<h2 class="custom-header_1">{{ order.customer.first_name | upcase }}, thank you for your order.<br> We are excited to see you joining Punch\'\d Energy family.</h2>';
+$nht+='</div>';
+$nht+='<div class="custom-row padTop">';
+$nht+='<div class="custom-md-7">';
+$nht+='<div class="order-summary">';
+$nht+='<h2 class="custom-header">Your order information</h2>';
+$nht+='<span class="order-num">Order {{order.name}}</span>';
+$nht+='<hr class="ty-hr"/>';
+$nht+='<div class="order-item-wrap">';
+
+
+{% for line in order.line_items %}
+$nht+='<div class="order-image-wrap">';
+$nht+='<div class="image-box">';
+$nht+='{{ line.image | img_url: '100x100' | img_tag }}';
+$nht+='</div>';
+$nht+='<div class="title-box">';
+$nht+='<p>{{line.title}}</p>';
+$nht+='</div>';
+$nht+='<div class="price-box">{{line.final_line_price | money}}</div>';
+$nht+='</div>';
+
+{% endfor %}
+
+$sharecoupon = '{{ order.customer.first_name | upcase  }}-10-OFF';
+$fbshareUrl = 'https://www.facebook.com/sharer/sharer.php?u='+window.Shopify.shop+'&quote='+encodeURI($sharecoupon);
+
+$nht+='</div>';
+$nht+='<hr class="ty-hr"/>';
+$nht+='<div class="order-amount">';
+$nht+='<div class="amount-wrap">';
+$nht+='<div class="text">';
+
+
+{% if order.total_discounts > 0%}
+$nht+='<p>Discount</p>';
+{% endif %}
+
+
+$nht+='<p>Subtotal</p>';
+
+$nht+='<p>Shipping</p>';
+
+
+$nht+='<p>Taxes</p>';
+$nht+='</div>';
+$nht+='<div class="amount">';
+{% if order.total_discounts > 0%}
+$nht+='<p>- {{order.total_discounts | money}}</p>';
+{% endif %}
+$nht+='<p>{{order.subtotal_price | money}}</p>';
+
+$nht+='<p>{{order.shipping_price | money}}</p>';
+$nht+='<p>{{order.tax_price | money }}</p>';
+$nht+='</div>';
+$nht+='</div>';
+$nht+='<hr class="ty-hr"/>';
+$nht+='<div class="amount-wrap">';
+$nht+='<div class="text">Total</div>';
+$nht+='<div class="amount">';
+$nht+='<p class="final-total">{{order.total_price | money}}</p>';
+$nht+='</div>';
+$nht+='</div>';
+$nht+='</div>';
+$nht+='</div>';
+$nht+='</div>';
+$nht+='<div class="custom-md-7 desktop-hide">';
+$nht+='<div class="order-summary" style="text-align: center;">';
+$nht+='<h2 class="custom-header">Customer information</h2>';
+$nht+='<hr class="ty-hr"/>';
+$nht+='<div class="shipping-info">';
+$nht+='<h5>Shipping address</h5>';
+
+
+$nht+=$address;
+
+
+$nht+='</div>';
+$nht+='</div>';
+$nht+='</div>';
+
+$nht+='<div class="custom-md-5">';
+$nht+='<div class="order-summary_2 new_coupon">';
+$nht+='<p class="custom-header_2">Get 10% OFF for next Punch\'\d Energy purchase for<br>for you AND your friends</p>';
+$nht+='<div class="coupon-box">';
+$nht+='<span>{{ order.customer.first_name | upcase  }}-10-OFF</span>';
+$nht+='</div>';
+$nht+='<div class="custom-row coupon-bottom">';
+$nht+='<div class="custom-md-4"><a style="cursor:pointer" class="copy-clip" >Copy to clipboard</a></div>';
+$nht+='<div class="custom-md-4"><a href="#">Email to friends</a></div>';
+$nht+='<div class="custom-md-4"><a target="_blank" href="'+$fbshareUrl+'"  >Share on Facebook</a></div>';
+$nht+='</div>';
+$nht+='</div>';
+$nht+='<div class="order-summary_2 new_socialbx">';
+$nht+='<h2 class="custom-header">Let\'\s stay in touch</h2>';
+$nht+='<hr class="ty-hr"/>';
+$nht+='<div class="social-box">';
+$nht+='<a href="https://www.instagram.com/punchdenergy/?hl=en"><img src="https://cdn.shopify.com/s/files/1/1233/4562/files/Instagram_small.png?v=1585856408"></a>';
+$nht+='<a href="https://www.facebook.com/garypunchd/photos/punchd-energy-make-sure-your-get-up-and-go-got-up-and-went-punchdenergy-getpunch/2262669107123411/"><img src="https://cdn.shopify.com/s/files/1/1233/4562/files/Facebook_small.png?v=1585856396"></a>';
+$nht+='</div>';
+$nht+='</div>';
+$nht+='</div>';
+
+
+$nht+='<div class="custom-md-5" style="display:none;">';
+$nht+='<div class="order-summary_2">';
+$nht+='<p class="custom-header_2">Get 10% OFF for next Punchd Energy purchase for<br>for you AND your friends</p>';
+$nht+='<div class="coupon-box">';
+
+
+$nht+='<span>{{ order.customer.first_name | upcase  }}-10-OFF</span>';
+$nht+='</div>';
+$nht+='<div class="custom-row coupon-bottom">';
+$nht+='<div class="custom-md-4"><a style="cursor:pointer" class="copy-clip" >Copy to clipboard</a></div>';
+$nht+='<div class="custom-md-4"><a href="">Email to friends</a></div>';
+$nht+='<div class="custom-md-4"><a target="_blank" href="'+$fbshareUrl+'">Share on Facebook</a></div>';
+
+
+$nht+='</div>';
+$nht+='</div>';
+$nht+='</div>';
+$nht+='</div>';
+$nht+='<div class="custom-row padTop">';
+$nht+='<div class="custom-md-7 mobile-hide">';
+$nht+='<div class="order-summary" style="text-align: center;">';
+$nht+='<h2 class="custom-header">Customer information</h2>';
+$nht+='<hr class="ty-hr"/>';
+$nht+='<div class="shipping-info">';
+$nht+='<h5>Shipping address</h5>';
+
+
+$nht+=$address;
+
+
+$nht+='</div>';
+$nht+='</div>';
+$nht+='</div>';
+$nht+='<div class="custom-md-5" style="display:none">';
+$nht+='<div class="order-summary_2">';
+$nht+='<h2 class="custom-header">Let\'\s stay in touch</h2>';
+
+
+$nht+='<hr class="ty-hr"/>';
+$nht+='<div class="social-box">';
+$nht+='<a target="_blank" href="https://www.instagram.com/punchdenergy/?hl=en"><img src="https://cdn.shopify.com/s/files/1/1233/4562/files/Instagram_small.png?v=1585856408"></a>';
+$nht+='<a target="_blank"  href="https://www.facebook.com/garypunchd/photos/punchd-energy-make-sure-your-get-up-and-go-got-up-and-went-punchdenergy-getpunch/2262669107123411/"><img src="https://cdn.shopify.com/s/files/1/1233/4562/files/Facebook_small.png?v=1585856396"></a>';
+$nht+='</div>';
+$nht+='</div>';
+$nht+='</div>';
+$nht+='</div>';
+$nht+='<div class="back-home"><a href="https://punchdenergy.com/">Back to Punch\'\d Energy website</a></div>';
+$nht+='</div>';
+
+
+$('body').append($nht);
+  function CopyToClipboard(value) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val(value).select();
+    document.execCommand("copy");
+    $temp.remove();
+    alert('Coupon code Copied')
+  }
+$(document).on('click','.copy-clip',function(){
+CopyToClipboard($sharecoupon);
+})
+
+})
+</script>
